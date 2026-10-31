@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -165,71 +165,74 @@
   <div class="category-bar" id="categoryBar">
     <button class="cat-btn active" data-cat="all">全部</button>
     <button class="cat-btn" data-cat="family">家人</button>
-    <button class="cat-btn" data-cat="body">身体</button>
+    <button class="cat-btn" data-cat="body">身體</button>
     <button class="cat-btn" data-cat="food">食物</button>
     <button class="cat-btn" data-cat="daily">日常</button>
-    <button class="cat-btn" data-cat="home">家里</button>
+    <button class="cat-btn" data-cat="home">家裡</button>
     <button class="cat-btn" data-cat="other">其他</button>
   </div>
 
   <div class="card-container">
     <div class="card" id="card">
       <div class="card-face front">
-        <div class="chinese" id="chineseText">黄瓜</div>
-        <div class="hint">点我看拼音 👆</div>
+        <div class="chinese" id="chineseText">黃瓜</div>
+        <div class="hint">點我看拼音 👆</div>
       </div>
       <div class="card-face back">
         <div class="pinyin" id="pinyinText">huáng guā</div>
-        <div class="hint">再点一次返回</div>
+        <div class="hint">再點一次返回</div>
       </div>
     </div>
   </div>
 
-  <button class="speak-btn" id="speakBtn">🔊 听发音</button>
+  <button class="speak-btn" id="speakBtn">🔊 聽發音</button>
 
   <div class="controls">
-    <button id="prevBtn">← 上一张</button>
-    <button class="secondary" id="shuffleBtn">🔀 打乱</button>
-    <button id="nextBtn">下一张 →</button>
+    <button id="prevBtn">← 上一張</button>
+    <button class="secondary" id="shuffleBtn">🔀 打亂</button>
+    <button id="nextBtn">下一張 →</button>
   </div>
 
 <script>
 const allCards = [
   // 食物
-  { char: "黄瓜", pinyin: "huáng guā", cat: "food" },
+  { char: "黃瓜", pinyin: "huáng guā", cat: "food" },
   { char: "白菜", pinyin: "bái cài", cat: "food" },
   { char: "香蕉", pinyin: "xiāng jiāo", cat: "food" },
   { char: "橙", pinyin: "chéng", cat: "food" },
-  { char: "鱼", pinyin: "yú", cat: "food" },
-  { char: "鸡蛋", pinyin: "jī dàn", cat: "food" },
+  { char: "魚", pinyin: "yú", cat: "food" },
+  { char: "雞蛋", pinyin: "jī dàn", cat: "food" },
   { char: "米", pinyin: "mǐ", cat: "food" },
   { char: "肉", pinyin: "ròu", cat: "food" },
   { char: "牛奶", pinyin: "niú nǎi", cat: "food" },
-  { char: "月饼", pinyin: "yuè bǐng", cat: "food" },
+  { char: "月餅", pinyin: "yuè bǐng", cat: "food" },
   { char: "水", pinyin: "shuǐ", cat: "food" },
 
   // 家人
   { char: "爸爸", pinyin: "bà ba", cat: "family" },
-  { char: "妈妈", pinyin: "mā ma", cat: "family" },
+  { char: "媽媽", pinyin: "mā ma", cat: "family" },
   { char: "哥哥", pinyin: "gē ge", cat: "family" },
   { char: "姐姐", pinyin: "jiě jie", cat: "family" },
   { char: "弟弟", pinyin: "dì di", cat: "family" },
   { char: "妹妹", pinyin: "mèi mei", cat: "family" },
 
-  // 身体
+  // 身體
   { char: "眼睛", pinyin: "yǎn jing", cat: "body" },
   { char: "嘴巴", pinyin: "zuǐ ba", cat: "body" },
   { char: "鼻子", pinyin: "bí zi", cat: "body" },
   { char: "耳朵", pinyin: "ěr duo", cat: "body" },
   { char: "手", pinyin: "shǒu", cat: "body" },
-  { char: "脚", pinyin: "jiǎo", cat: "body" },
-  { char: "一双手", pinyin: "yì shuāng shǒu", cat: "body" },
-  { char: "一双脚", pinyin: "yì shuāng jiǎo", cat: "body" },
-  { char: "一双眼睛", pinyin: "yì shuāng yǎn jing", cat: "body" },
+  { char: "腳", pinyin: "jiǎo", cat: "body" },
+  { char: "一雙手", pinyin: "yì shuāng shǒu", cat: "body" },
+  { char: "一雙腳", pinyin: "yì shuāng jiǎo", cat: "body" },
+  { char: "一雙眼睛", pinyin: "yì shuāng yǎn jing", cat: "body" },
+  { char: "一雙耳朵", pinyin: "yì shuāng ěr duo", cat: "body" },
+  { char: "一張嘴巴", pinyin: "yì zhāng zuǐ ba", cat: "body" },
+  { char: "一個鼻子", pinyin: "yí gè bí zi", cat: "body" },
 
   // 日常
   { char: "洗手", pinyin: "xǐ shǒu", cat: "daily" },
-  { char: "洗脸", pinyin: "xǐ liǎn", cat: "daily" },
+  { char: "洗臉", pinyin: "xǐ liǎn", cat: "daily" },
   { char: "洗澡", pinyin: "xǐ zǎo", cat: "daily" },
   { char: "吃早餐", pinyin: "chī zǎo cān", cat: "daily" },
   { char: "喝牛奶", pinyin: "hē niú nǎi", cat: "daily" },
@@ -237,29 +240,29 @@ const allCards = [
   { char: "坐下", pinyin: "zuò xià", cat: "daily" },
   { char: "笑", pinyin: "xiào", cat: "daily" },
 
-  // 家里
+  // 家裡
   { char: "床", pinyin: "chuáng", cat: "home" },
-  { char: "门", pinyin: "mén", cat: "home" },
+  { char: "門", pinyin: "mén", cat: "home" },
   { char: "房子", pinyin: "fáng zi", cat: "home" },
-  { char: "衣柜", pinyin: "yī guì", cat: "home" },
-  { char: "书架", pinyin: "shū jià", cat: "home" },
+  { char: "衣櫃", pinyin: "yī guì", cat: "home" },
+  { char: "書架", pinyin: "shū jià", cat: "home" },
   { char: "皮球", pinyin: "pí qiú", cat: "home" },
   { char: "玩具", pinyin: "wán jù", cat: "home" },
 
   // 其他
   { char: "月亮", pinyin: "yuè liang", cat: "other" },
-  { char: "灯笼", pinyin: "dēng long", cat: "other" },
+  { char: "燈籠", pinyin: "dēng long", cat: "other" },
   { char: "生日", pinyin: "shēng rì", cat: "other" },
-  { char: "老师", pinyin: "lǎo shī", cat: "other" },
-  { char: "老师好", pinyin: "lǎo shī hǎo", cat: "other" },
-  { char: "校长", pinyin: "xiào zhǎng", cat: "other" },
+  { char: "老師", pinyin: "lǎo shī", cat: "other" },
+  { char: "老師好", pinyin: "lǎo shī hǎo", cat: "other" },
+  { char: "校長", pinyin: "xiào zhǎng", cat: "other" },
   { char: "早", pinyin: "zǎo", cat: "other" },
   { char: "我", pinyin: "wǒ", cat: "other" },
   { char: "人", pinyin: "rén", cat: "other" },
   { char: "男孩子", pinyin: "nán hái zi", cat: "other" },
   { char: "女孩子", pinyin: "nǚ hái zi", cat: "other" },
-  { char: "中秋节", pinyin: "zhōng qiū jié", cat: "other" },
-  { char: "纸和笔", pinyin: "zhǐ hé bǐ", cat: "other" },
+  { char: "中秋節", pinyin: "zhōng qiū jié", cat: "other" },
+  { char: "紙和筆", pinyin: "zhǐ hé bǐ", cat: "other" },
 ];
 
 let cards = [...allCards];
@@ -287,7 +290,7 @@ function speak() {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(cards[currentIndex].char);
-  utter.lang = 'zh-CN';
+  utter.lang = 'zh-TW';
   utter.rate = 0.8;
   utter.pitch = 1.1;
   window.speechSynthesis.speak(utter);
