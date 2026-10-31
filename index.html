@@ -26,26 +26,33 @@
   }
   .header {
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .header h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     color: #e84393;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   }
   .progress {
-    font-size: 1rem;
-    margin-top: 4px;
+    font-size: 0.95rem;
+    margin-top: 2px;
     color: #636e72;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .known-progress {
+    font-size: 0.85rem;
+    color: #00b894;
+    margin-top: 2px;
+    font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
   }
   .card-container {
     perspective: 1000px;
     width: 100%;
     max-width: 420px;
-    height: 280px;
-    margin: 12px 0;
+    height: 260px;
+    margin: 10px 0;
   }
   .card {
     width: 100%;
@@ -77,32 +84,43 @@
     transform: rotateY(180deg);
   }
   .chinese {
-    font-size: 4.8rem;
+    font-size: 4.6rem;
     font-weight: bold;
     line-height: 1.1;
     text-align: center;
     font-family: "KaiTi", "STKaiti", "KaiTi_GB2312", "Kaiti SC", "楷体", "楷体_GB2312", serif;
   }
   .pinyin {
-    font-size: 1.9rem;
-    margin-top: 16px;
+    font-size: 1.8rem;
+    margin-top: 14px;
     color: #2d3436;
     font-weight: 500;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
   }
   .hint {
     position: absolute;
-    bottom: 12px;
-    font-size: 0.85rem;
+    bottom: 10px;
+    font-size: 0.8rem;
     color: #888;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
   }
+  .known-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: #00b894;
+    color: white;
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
   .controls {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: nowrap;
     justify-content: center;
-    margin-top: 8px;
+    margin-top: 6px;
     width: 100%;
     max-width: 420px;
   }
@@ -111,8 +129,8 @@
     color: white;
     border: none;
     border-radius: 50px;
-    padding: 12px 10px;
-    font-size: 1rem;
+    padding: 11px 8px;
+    font-size: 0.95rem;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(255,107,107,0.3);
@@ -123,26 +141,44 @@
   }
   button:active { transform: scale(0.96); }
   button.secondary { background: #74b9ff; box-shadow: 0 4px 12px rgba(116,185,255,0.3); }
+  button.success { background: #00b894; box-shadow: 0 4px 12px rgba(0,184,148,0.3); }
   .speak-btn {
     background: #a29bfe;
-    margin-top: 8px;
-    font-size: 1.1rem;
-    padding: 12px 32px;
+    margin-top: 6px;
+    font-size: 1.05rem;
+    padding: 11px 28px;
     width: 100%;
     max-width: 420px;
     flex: none;
   }
+  .known-btn {
+    background: #00b894;
+    margin-top: 6px;
+    font-size: 1rem;
+    padding: 11px 20px;
+    width: 100%;
+    max-width: 420px;
+    flex: none;
+  }
+  .mode-btn {
+    background: #636e72;
+    margin-top: 4px;
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    width: auto;
+    flex: none;
+  }
   .category-bar {
     display: flex;
-    gap: 6px;
+    gap: 5px;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     max-width: 420px;
   }
   .cat-btn {
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    padding: 5px 9px;
+    font-size: 0.8rem;
     min-width: auto;
     background: rgba(255,255,255,0.75);
     color: #2d3436;
@@ -154,12 +190,10 @@
     color: white;
   }
   @media (max-width: 420px) {
-    .chinese { font-size: 4.2rem; }
-    .pinyin { font-size: 1.7rem; }
-    .card-container { height: 260px; }
-    button { padding: 11px 6px; font-size: 0.95rem; }
-    .speak-btn { padding: 11px 20px; }
-    .cat-btn { padding: 5px 8px; font-size: 0.8rem; }
+    .chinese { font-size: 4rem; }
+    .pinyin { font-size: 1.6rem; }
+    .card-container { height: 240px; }
+    button { padding: 10px 5px; font-size: 0.9rem; }
   }
 </style>
 </head>
@@ -167,6 +201,7 @@
   <div class="header">
     <h1>🌟 小朋友中文闪卡 🌟</h1>
     <div class="progress" id="progress">1 / 40</div>
+    <div class="known-progress" id="knownProgress">已會 0 / 40</div>
   </div>
 
   <div class="category-bar" id="categoryBar">
@@ -182,6 +217,7 @@
   <div class="card-container">
     <div class="card" id="card">
       <div class="card-face front">
+        <div class="known-badge" id="knownBadge" style="display:none">已會</div>
         <div class="chinese" id="chineseText">黃瓜</div>
         <div class="hint">點我看拼音 👆</div>
       </div>
@@ -193,6 +229,8 @@
   </div>
 
   <button class="speak-btn" id="speakBtn">🔊 聽發音</button>
+  <button class="known-btn" id="knownBtn">✓ 會了</button>
+  <button class="mode-btn" id="modeBtn">只練不會的</button>
 
   <div class="controls">
     <button id="prevBtn">← 上一張</button>
@@ -202,7 +240,6 @@
 
 <script>
 const allCards = [
-  // 食物
   { char: "黃瓜", pinyin: "huáng guā", cat: "food" },
   { char: "白菜", pinyin: "bái cài", cat: "food" },
   { char: "香蕉", pinyin: "xiāng jiāo", cat: "food" },
@@ -214,16 +251,12 @@ const allCards = [
   { char: "牛奶", pinyin: "niú nǎi", cat: "food" },
   { char: "月餅", pinyin: "yuè bǐng", cat: "food" },
   { char: "水", pinyin: "shuǐ", cat: "food" },
-
-  // 家人
   { char: "爸爸", pinyin: "bà ba", cat: "family" },
   { char: "媽媽", pinyin: "mā ma", cat: "family" },
   { char: "哥哥", pinyin: "gē ge", cat: "family" },
   { char: "姐姐", pinyin: "jiě jie", cat: "family" },
   { char: "弟弟", pinyin: "dì di", cat: "family" },
   { char: "妹妹", pinyin: "mèi mei", cat: "family" },
-
-  // 身體
   { char: "眼睛", pinyin: "yǎn jing", cat: "body" },
   { char: "嘴巴", pinyin: "zuǐ ba", cat: "body" },
   { char: "鼻子", pinyin: "bí zi", cat: "body" },
@@ -236,8 +269,6 @@ const allCards = [
   { char: "一雙耳朵", pinyin: "yì shuāng ěr duo", cat: "body" },
   { char: "一張嘴巴", pinyin: "yì zhāng zuǐ ba", cat: "body" },
   { char: "一個鼻子", pinyin: "yí gè bí zi", cat: "body" },
-
-  // 日常
   { char: "洗手", pinyin: "xǐ shǒu", cat: "daily" },
   { char: "洗臉", pinyin: "xǐ liǎn", cat: "daily" },
   { char: "洗澡", pinyin: "xǐ zǎo", cat: "daily" },
@@ -246,8 +277,6 @@ const allCards = [
   { char: "回家", pinyin: "huí jiā", cat: "daily" },
   { char: "坐下", pinyin: "zuò xià", cat: "daily" },
   { char: "笑", pinyin: "xiào", cat: "daily" },
-
-  // 家裡
   { char: "床", pinyin: "chuáng", cat: "home" },
   { char: "門", pinyin: "mén", cat: "home" },
   { char: "房子", pinyin: "fáng zi", cat: "home" },
@@ -255,8 +284,6 @@ const allCards = [
   { char: "書架", pinyin: "shū jià", cat: "home" },
   { char: "皮球", pinyin: "pí qiú", cat: "home" },
   { char: "玩具", pinyin: "wán jù", cat: "home" },
-
-  // 其他
   { char: "月亮", pinyin: "yuè liang", cat: "other" },
   { char: "燈籠", pinyin: "dēng long", cat: "other" },
   { char: "生日", pinyin: "shēng rì", cat: "other" },
@@ -275,18 +302,53 @@ const allCards = [
 let cards = [...allCards];
 let currentIndex = 0;
 let isFlipped = false;
+let onlyUnknown = false;
+let knownSet = new Set(JSON.parse(localStorage.getItem('knownCards') || '[]'));
 
 const cardEl = document.getElementById('card');
 const chineseText = document.getElementById('chineseText');
 const pinyinText = document.getElementById('pinyinText');
 const progressEl = document.getElementById('progress');
+const knownProgressEl = document.getElementById('knownProgress');
+const knownBadge = document.getElementById('knownBadge');
+const knownBtn = document.getElementById('knownBtn');
+const modeBtn = document.getElementById('modeBtn');
 const speakBtn = document.getElementById('speakBtn');
 
+function saveKnown() {
+  localStorage.setItem('knownCards', JSON.stringify([...knownSet]));
+}
+
+function getFilteredCards() {
+  let filtered = onlyUnknown
+    ? allCards.filter(c => !knownSet.has(c.char))
+    : [...allCards];
+  return filtered;
+}
+
+function updateProgress() {
+  const total = allCards.length;
+  const known = knownSet.size;
+  knownProgressEl.textContent = `已會 ${known} / ${total}`;
+  progressEl.textContent = `${currentIndex + 1} / ${cards.length}`;
+}
+
 function updateCard() {
+  if (cards.length === 0) {
+    chineseText.textContent = onlyUnknown ? '全部都會了！' : '沒有卡片';
+    pinyinText.textContent = '';
+    knownBadge.style.display = 'none';
+    knownBtn.textContent = '✓ 會了';
+    return;
+  }
   const card = cards[currentIndex];
   chineseText.textContent = card.char;
   pinyinText.textContent = card.pinyin;
-  progressEl.textContent = `${currentIndex + 1} / ${cards.length}`;
+  const isKnown = knownSet.has(card.char);
+  knownBadge.style.display = isKnown ? 'block' : 'none';
+  knownBtn.textContent = isKnown ? '✗ 取消會了' : '✓ 會了';
+  knownBtn.style.background = isKnown ? '#636e72' : '#00b894';
+  updateProgress();
   if (isFlipped) {
     cardEl.classList.remove('flipped');
     isFlipped = false;
@@ -294,7 +356,7 @@ function updateCard() {
 }
 
 function speak() {
-  if (!window.speechSynthesis) return;
+  if (!window.speechSynthesis || cards.length === 0) return;
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(cards[currentIndex].char);
   utter.lang = 'zh-TW';
@@ -303,23 +365,33 @@ function speak() {
   window.speechSynthesis.speak(utter);
 }
 
+function applyFilter() {
+  cards = getFilteredCards();
+  currentIndex = 0;
+  updateCard();
+}
+
 cardEl.addEventListener('click', () => {
+  if (cards.length === 0) return;
   cardEl.classList.toggle('flipped');
   isFlipped = !isFlipped;
   if (isFlipped) speak();
 });
 
 document.getElementById('nextBtn').addEventListener('click', () => {
+  if (cards.length === 0) return;
   currentIndex = (currentIndex + 1) % cards.length;
   updateCard();
 });
 
 document.getElementById('prevBtn').addEventListener('click', () => {
+  if (cards.length === 0) return;
   currentIndex = (currentIndex - 1 + cards.length) % cards.length;
   updateCard();
 });
 
 document.getElementById('shuffleBtn').addEventListener('click', () => {
+  if (cards.length === 0) return;
   for (let i = cards.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [cards[i], cards[j]] = [cards[j], cards[i]];
@@ -330,13 +402,35 @@ document.getElementById('shuffleBtn').addEventListener('click', () => {
 
 speakBtn.addEventListener('click', speak);
 
+knownBtn.addEventListener('click', () => {
+  if (cards.length === 0) return;
+  const char = cards[currentIndex].char;
+  if (knownSet.has(char)) {
+    knownSet.delete(char);
+  } else {
+    knownSet.add(char);
+  }
+  saveKnown();
+  applyFilter();
+});
+
+modeBtn.addEventListener('click', () => {
+  onlyUnknown = !onlyUnknown;
+  modeBtn.textContent = onlyUnknown ? '顯示全部' : '只練不會的';
+  modeBtn.style.background = onlyUnknown ? '#e84393' : '#636e72';
+  applyFilter();
+});
+
 // Category filter
 document.querySelectorAll('.cat-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const cat = btn.dataset.cat;
-    cards = cat === 'all' ? [...allCards] : allCards.filter(c => c.cat === cat);
+    let base = onlyUnknown
+      ? allCards.filter(c => !knownSet.has(c.char))
+      : [...allCards];
+    cards = cat === 'all' ? base : base.filter(c => c.cat === cat);
     currentIndex = 0;
     updateCard();
   });
@@ -355,7 +449,8 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Init
-updateCard();
+applyFilter();
+updateProgress();
 </script>
 </body>
 </html>
