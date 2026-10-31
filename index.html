@@ -21,22 +21,22 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 16px;
+    padding: 12px;
     color: var(--text);
   }
   .header {
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
   .header h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: #e84393;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   }
   .progress {
-    font-size: 1.1rem;
-    margin-top: 6px;
+    font-size: 1rem;
+    margin-top: 4px;
     color: #636e72;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   }
@@ -44,8 +44,8 @@
     perspective: 1000px;
     width: 100%;
     max-width: 420px;
-    height: 320px;
-    margin: 20px 0;
+    height: 280px;
+    margin: 12px 0;
   }
   .card {
     width: 100%;
@@ -67,7 +67,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-    padding: 20px;
+    padding: 16px;
   }
   .front {
     background: white;
@@ -77,32 +77,32 @@
     transform: rotateY(180deg);
   }
   .chinese {
-    font-size: 5.5rem;
+    font-size: 4.8rem;
     font-weight: bold;
     line-height: 1.1;
     text-align: center;
     font-family: "KaiTi", "STKaiti", "KaiTi_GB2312", "Kaiti SC", "楷体", "楷体_GB2312", serif;
   }
   .pinyin {
-    font-size: 2.2rem;
-    margin-top: 20px;
+    font-size: 1.9rem;
+    margin-top: 16px;
     color: #2d3436;
     font-weight: 500;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
   }
   .hint {
     position: absolute;
-    bottom: 16px;
-    font-size: 0.95rem;
+    bottom: 12px;
+    font-size: 0.85rem;
     color: #888;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
   }
   .controls {
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    gap: 8px;
+    flex-wrap: nowrap;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 8px;
     width: 100%;
     max-width: 420px;
   }
@@ -111,48 +111,55 @@
     color: white;
     border: none;
     border-radius: 50px;
-    padding: 16px 28px;
-    font-size: 1.15rem;
+    padding: 12px 10px;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 6px 15px rgba(255,107,107,0.3);
+    box-shadow: 0 4px 12px rgba(255,107,107,0.3);
     transition: all 0.2s;
-    min-width: 110px;
+    flex: 1;
+    min-width: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
   }
   button:active { transform: scale(0.96); }
-  button.secondary { background: #74b9ff; box-shadow: 0 6px 15px rgba(116,185,255,0.3); }
-  button.success { background: #55efc4; color: #2d3436; box-shadow: 0 6px 15px rgba(85,239,196,0.3); }
+  button.secondary { background: #74b9ff; box-shadow: 0 4px 12px rgba(116,185,255,0.3); }
   .speak-btn {
     background: #a29bfe;
-    margin-top: 12px;
-    font-size: 1.3rem;
-    padding: 14px 40px;
+    margin-top: 8px;
+    font-size: 1.1rem;
+    padding: 12px 32px;
+    width: 100%;
+    max-width: 420px;
+    flex: none;
   }
   .category-bar {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     max-width: 420px;
   }
   .cat-btn {
-    padding: 8px 14px;
-    font-size: 0.9rem;
+    padding: 6px 10px;
+    font-size: 0.85rem;
     min-width: auto;
-    background: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.75);
     color: #2d3436;
     box-shadow: none;
+    flex: 0 1 auto;
   }
   .cat-btn.active {
     background: #e84393;
     color: white;
   }
-  @media (max-width: 400px) {
+  @media (max-width: 420px) {
     .chinese { font-size: 4.2rem; }
-    .pinyin { font-size: 1.8rem; }
-    .card-container { height: 280px; }
+    .pinyin { font-size: 1.7rem; }
+    .card-container { height: 260px; }
+    button { padding: 11px 6px; font-size: 0.95rem; }
+    .speak-btn { padding: 11px 20px; }
+    .cat-btn { padding: 5px 8px; font-size: 0.8rem; }
   }
 </style>
 </head>
