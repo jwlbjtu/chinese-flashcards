@@ -47,6 +47,21 @@
     font-weight: bold;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
   }
+  .search-box {
+    width: 100%;
+    max-width: 420px;
+    margin: 6px 0;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 50px;
+    outline: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  }
   .card-container {
     perspective: 1000px;
     width: 100%;
@@ -141,7 +156,6 @@
   }
   button:active { transform: scale(0.96); }
   button.secondary { background: #74b9ff; box-shadow: 0 4px 12px rgba(116,185,255,0.3); }
-  button.success { background: #00b894; box-shadow: 0 4px 12px rgba(0,184,148,0.3); }
   .speak-btn {
     background: #a29bfe;
     margin-top: 6px;
@@ -202,6 +216,10 @@
     <h1>🌟 小朋友中文闪卡 🌟</h1>
     <div class="progress" id="progress">1 / 40</div>
     <div class="known-progress" id="knownProgress">已會 0 / 40</div>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="搜索字或拼音…" />
   </div>
 
   <div class="category-bar" id="categoryBar">
@@ -277,7 +295,7 @@ const allCards = [
   { char: "回家", pinyin: "huí jiā", cat: "daily" },
   { char: "坐下", pinyin: "zuò xià", cat: "daily" },
   { char: "笑", pinyin: "xiào", cat: "daily" },
-  { char: "床", pinyin: "chuáng", cat: "home" },
+  { char: "牀", pinyin: "chuáng", cat: "home" },
   { char: "門", pinyin: "mén", cat: "home" },
   { char: "房子", pinyin: "fáng zi", cat: "home" },
   { char: "衣櫃", pinyin: "yī guì", cat: "home" },
@@ -297,12 +315,15 @@ const allCards = [
   { char: "女孩子", pinyin: "nǚ hái zi", cat: "other" },
   { char: "中秋節", pinyin: "zhōng qiū jié", cat: "other" },
   { char: "紙和筆", pinyin: "zhǐ hé bǐ", cat: "other" },
+  { char: "力", pinyin: "lì", cat: "other" },
 ];
 
 let cards = [...allCards];
 let currentIndex = 0;
 let isFlipped = false;
 let onlyUnknown = false;
+let currentCategory = 'all';
+let searchQuery = '';
 let knownSet = new Set(JSON.parse(localStorage.getItem('knownCards') || '[]'));
 
 const cardEl = document.getElementById('card');
@@ -314,15 +335,32 @@ const knownBadge = document.getElementById('knownBadge');
 const knownBtn = document.getElementById('knownBtn');
 const modeBtn = document.getElementById('modeBtn');
 const speakBtn = document.getElementById('speakBtn');
+const searchInput = document.getElementById('searchInput');
 
 function saveKnown() {
   localStorage.setItem('knownCards', JSON.stringify([...knownSet]));
 }
 
 function getFilteredCards() {
-  let filtered = onlyUnknown
-    ? allCards.filter(c => !knownSet.has(c.char))
-    : [...allCards];
+  let filtered = allCards;
+
+  if (onlyUnknown) {
+    filtered = filtered.filter(c => !knownSet.has(c.char));
+  }
+
+  if (currentCategory !== 'all') {
+    filtered = filtered.filter(c => c.cat === currentCategory);
+  }
+
+  if (searchQuery.trim()) {
+    const q = searchQuery.trim().toLowerCase();
+    filtered = filtered.filter(c =>
+      c.char.includes(q) ||
+      c.pinyin.toLowerCase().includes(q) ||
+      c.pinyin.replace(/\s/g, '').toLowerCase().includes(q)
+    );
+  }
+
   return filtered;
 }
 
@@ -330,15 +368,16 @@ function updateProgress() {
   const total = allCards.length;
   const known = knownSet.size;
   knownProgressEl.textContent = `已會 ${known} / ${total}`;
-  progressEl.textContent = `${currentIndex + 1} / ${cards.length}`;
+  progressEl.textContent = cards.length ? `${currentIndex + 1} / ${cards.length}` : '0 / 0';
 }
 
 function updateCard() {
   if (cards.length === 0) {
-    chineseText.textContent = onlyUnknown ? '全部都會了！' : '沒有卡片';
+    chineseText.textContent = searchQuery ? '沒有找到' : (onlyUnknown ? '全部都會了！' : '沒有卡片');
     pinyinText.textContent = '';
     knownBadge.style.display = 'none';
     knownBtn.textContent = '✓ 會了';
+    updateProgress();
     return;
   }
   const card = cards[currentIndex];
@@ -421,23 +460,24 @@ modeBtn.addEventListener('click', () => {
   applyFilter();
 });
 
+searchInput.addEventListener('input', (e) => {
+  searchQuery = e.target.value;
+  applyFilter();
+});
+
 // Category filter
 document.querySelectorAll('.cat-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const cat = btn.dataset.cat;
-    let base = onlyUnknown
-      ? allCards.filter(c => !knownSet.has(c.char))
-      : [...allCards];
-    cards = cat === 'all' ? base : base.filter(c => c.cat === cat);
-    currentIndex = 0;
-    updateCard();
+    currentCategory = btn.dataset.cat;
+    applyFilter();
   });
 });
 
 // Keyboard support
 document.addEventListener('keydown', (e) => {
+  if (document.activeElement === searchInput) return;
   if (e.key === 'ArrowRight' || e.key === ' ') {
     e.preventDefault();
     document.getElementById('nextBtn').click();
