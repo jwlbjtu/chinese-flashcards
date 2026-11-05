@@ -224,6 +224,7 @@
 
   <div class="category-bar" id="categoryBar">
     <button class="cat-btn active" data-cat="all">全部</button>
+    <button class="cat-btn" data-cat="exam">考試</button>
     <button class="cat-btn" data-cat="single">單字</button>
     <button class="cat-btn" data-cat="family">家人</button>
     <button class="cat-btn" data-cat="body">身體</button>
@@ -344,6 +345,14 @@ function saveKnown() {
   localStorage.setItem('knownCards', JSON.stringify([...knownSet]));
 }
 
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 function getFilteredCards() {
   let filtered = allCards;
 
@@ -353,6 +362,9 @@ function getFilteredCards() {
 
   if (currentCategory === 'single') {
     filtered = filtered.filter(c => c.char.length === 1);
+  } else if (currentCategory === 'exam') {
+    filtered = filtered.filter(c => c.char.length === 1 || c.char.length === 2);
+    filtered = shuffleArray(filtered);
   } else if (currentCategory !== 'all') {
     filtered = filtered.filter(c => c.cat === currentCategory);
   }
@@ -419,7 +431,6 @@ function applyFilter(keepIndex = false) {
     if (newIndex >= 0) {
       currentIndex = newIndex;
     } else {
-      // card was removed (e.g. marked known in onlyUnknown mode), stay at same position
       if (currentIndex >= cards.length) currentIndex = Math.max(0, cards.length - 1);
     }
   } else {
@@ -449,10 +460,7 @@ document.getElementById('prevBtn').addEventListener('click', () => {
 
 document.getElementById('shuffleBtn').addEventListener('click', () => {
   if (cards.length === 0) return;
-  for (let i = cards.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [cards[i], cards[j]] = [cards[j], cards[i]];
-  }
+  shuffleArray(cards);
   currentIndex = 0;
   updateCard();
 });
@@ -470,13 +478,11 @@ knownBtn.addEventListener('click', () => {
   }
   saveKnown();
 
-  // If in onlyUnknown mode and we just marked it known, remove it and stay at same index (shows next)
   if (onlyUnknown && !wasKnown) {
     cards = getFilteredCards();
     if (currentIndex >= cards.length) currentIndex = Math.max(0, cards.length - 1);
     updateCard();
   } else {
-    // Just update the badge / button, stay on the same card
     updateCard();
   }
 });
