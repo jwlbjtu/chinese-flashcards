@@ -385,6 +385,8 @@ function updateCard() {
     updateProgress();
     return;
   }
+  if (currentIndex >= cards.length) currentIndex = cards.length - 1;
+  if (currentIndex < 0) currentIndex = 0;
   const card = cards[currentIndex];
   chineseText.textContent = card.char;
   pinyinText.textContent = card.pinyin;
@@ -409,9 +411,20 @@ function speak() {
   window.speechSynthesis.speak(utter);
 }
 
-function applyFilter() {
+function applyFilter(keepIndex = false) {
+  const oldChar = cards[currentIndex]?.char;
   cards = getFilteredCards();
-  currentIndex = 0;
+  if (keepIndex && oldChar) {
+    const newIndex = cards.findIndex(c => c.char === oldChar);
+    if (newIndex >= 0) {
+      currentIndex = newIndex;
+    } else {
+      // card was removed (e.g. marked known in onlyUnknown mode), stay at same position
+      if (currentIndex >= cards.length) currentIndex = Math.max(0, cards.length - 1);
+    }
+  } else {
+    currentIndex = 0;
+  }
   updateCard();
 }
 
@@ -449,25 +462,35 @@ speakBtn.addEventListener('click', speak);
 knownBtn.addEventListener('click', () => {
   if (cards.length === 0) return;
   const char = cards[currentIndex].char;
-  if (knownSet.has(char)) {
+  const wasKnown = knownSet.has(char);
+  if (wasKnown) {
     knownSet.delete(char);
   } else {
     knownSet.add(char);
   }
   saveKnown();
-  applyFilter();
+
+  // If in onlyUnknown mode and we just marked it known, remove it and stay at same index (shows next)
+  if (onlyUnknown && !wasKnown) {
+    cards = getFilteredCards();
+    if (currentIndex >= cards.length) currentIndex = Math.max(0, cards.length - 1);
+    updateCard();
+  } else {
+    // Just update the badge / button, stay on the same card
+    updateCard();
+  }
 });
 
 modeBtn.addEventListener('click', () => {
   onlyUnknown = !onlyUnknown;
   modeBtn.textContent = onlyUnknown ? '顯示全部' : '只練不會的';
   modeBtn.style.background = onlyUnknown ? '#e84393' : '#636e72';
-  applyFilter();
+  applyFilter(true);
 });
 
 searchInput.addEventListener('input', (e) => {
   searchQuery = e.target.value;
-  applyFilter();
+  applyFilter(false);
 });
 
 // Category filter
@@ -476,7 +499,7 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentCategory = btn.dataset.cat;
-    applyFilter();
+    applyFilter(false);
   });
 });
 
